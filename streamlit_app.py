@@ -76,19 +76,22 @@ if driver:
         juicio = query_params.get("juicio", [""])  # Extraer el primer valor o usar "" como predeterminado
         usuario = query_params.get("u", [""])      # Extraer el primer valor o usar "" como predeterminado
         password = query_params.get("p", [""])     # Extraer el primer valor o usar "" como predeterminado
+        upload = query_params.get("upload", [""])     # Extraer el primer valor o usar "" como predeterminado
 
         # Validar los valores obtenidos
         if not juicio:
             st.warning("No se proporcionó un número de juicio en la URL.")
             st.stop()
-
         if not usuario:
             st.warning("No se proporcionó el usuario en la URL.")
             st.stop()
-
         if not password:
             st.warning("No se proporcionó la contraseña en la URL.")
             st.stop()
+        if not upload:
+            st.warning("no upload")
+            st.stop()
+
         # Mostrar el valor en la interfaz
         st.write(f"usuario: {usuario}")  
         st.write(f"password: {password}")  
@@ -193,6 +196,25 @@ if driver:
         archivo_original = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
         # Borra el archivo original en la carpeta de descargas
         os.remove(archivo_original)
+        pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
+        # URL de tu hosting para recibir el archivo
+        upload_url = "https://" + upload  
+        # Mostrar progreso en Streamlit
+        st.write(f"📤 Enviando el archivo {pdf_path} al servidor...")
+        try:
+            # Abrir el archivo y enviarlo como parte del POST
+            with open(pdf_path, "rb") as pdf_file:
+                files = {"file": (f"{juicio}-tasa.pdf", pdf_file, "application/pdf")}
+                response = requests.post(upload_url, files=files)
+            # Verificar la respuesta del servidor
+            if response.status_code == 200:
+                st.success(f"✅ Archivo {pdf_path} enviado con éxito al servidor.")
+                st.write("Respuesta del servidor:", response.text)
+            else:
+                st.error(f"❌ Error al enviar el archivo. Código de estado: {response.status_code}")
+                st.write("Mensaje del servidor:", response.text)
+        except Exception as e:
+            st.error(f"⚠️ Ocurrió un error al enviar el archivo: {e}")
 
         # Ruta del PDF descargado
         pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
