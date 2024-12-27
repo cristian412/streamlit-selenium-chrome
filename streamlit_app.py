@@ -21,20 +21,6 @@ import re
 import glob
 import shutil
 import PyPDF2
-from http.server import BaseHTTPRequestHandler
-
-def set_cors_headers():
-    st.session_state["CORS"] = True
-    st.experimental_set_query_params()
-    headers = {
-        "Access-Control-Allow-Origin": "*",  # Podés especificar un dominio en lugar de *
-        "Access-Control-Allow-Methods": "GET, POST",
-        "Access-Control-Allow-Headers": "Content-Type",
-    }
-    for key, value in headers.items():
-        st.experimental_set_query_params({key: value})
-
-set_cors_headers()
 
 # variables iniciales
 fecha = date.today()
