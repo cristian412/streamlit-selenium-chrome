@@ -128,8 +128,8 @@ if driver:
         action('iconabogadosFormId:j_id18','click')
         action('juicioFormId:fechaIdInputDate',fecha_actual)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        h1_text = soup.find('h1').get_text() if soup.find('h1') else "No se encontró <h1>"
-        st.code(h1_text)
+        # h1_text = soup.find('h1').get_text() if soup.find('h1') else "No se encontró <h1>"
+        # st.code(h1_text)
 
         # Agregar Demandante
         wait.until(EC.element_to_be_clickable((By.ID, 'juicioFormId:j_id59'))).click() 
@@ -202,7 +202,7 @@ if driver:
         # URL de tu hosting para recibir el archivo
         upload_url = "https://" + controlador + "/uploadtasajudicial"  
         # Mostrar progreso en Streamlit
-        st.write(f"📤 Enviando el archivo {pdf_path} al servidor...")
+        st.write(f"📤 Enviando el archivo  al servidor...")
         try:
             # Abrir el archivo y enviarlo como parte del POST
             with open(pdf_path, "rb") as pdf_file:
@@ -223,7 +223,7 @@ if driver:
 
         # Verificar si el archivo existe
         if os.path.exists(pdf_path):
-            st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
+            # st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
             with open(pdf_path, "rb") as pdf_file:
                 reader = PyPDF2.PdfReader(pdf_file)
                 texto_completo = ""
