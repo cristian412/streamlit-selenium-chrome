@@ -93,9 +93,9 @@ if driver:
             st.stop()
 
         # Mostrar el valor en la interfaz
-        st.write(f"usuario: {usuario}")  
-        st.write(f"password: {password}")  
-        st.write(f"Número de juicio obtenido: {juicio}")  
+        # st.write(f"usuario: {usuario}")  
+        # st.write(f"password: {password}")  
+        # st.write(f"Número de juicio obtenido: {juicio}")  
         st.write("🚀 Iniciar proceso !!")
 
         url = 'https://unionnegocios.com.py/sistema/juicios/datos/' + juicio
@@ -138,12 +138,13 @@ if driver:
         time.sleep(1)
         nro_doc_demandante = driver.find_element(By.ID, 'juicioFormId:demandantesListId:0:numeroDocumentoContribuyenteId')
         nro_doc_demandante.send_keys('80111738-0')
+        st.write("ℹ Demandante agregado")
 
         # Agregar demandado
         wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[5]/td/div/div/table/tbody/tr/td[2]/table/tbody/tr[6]/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td/form/span/table[1]/tbody/tr[6]/td/table/tbody/tr/td[2]/a'))).click()
         nro_doc_demandado = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[5]/td/div/div/table/tbody/tr/td[2]/table/tbody/tr[6]/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td/form/span/table[1]/tbody/tr[7]/td/table/tbody/tr/td[2]/input')))
         nro_doc_demandado.send_keys(cedula)
-
+        st.write("ℹ Demandado agregado")
         if data['ci2'] is not None and data['ci2'].isdigit():
             wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[5]/td/div/div/table/tbody/tr/td[2]/table/tbody/tr[6]/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td/form/span/table[1]/tbody/tr[6]/td/table/tbody/tr/td[2]/a'))).click()
             nro_doc_demandado2 = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/table/tbody/tr[5]/td/div/div/table/tbody/tr/td[2]/table/tbody/tr[6]/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td/form/span/table[1]/tbody/tr[7]/td/table/tbody/tr[2]/td[2]/input')))
@@ -155,6 +156,7 @@ if driver:
         agregarAccionPrep = wait.until(EC.element_to_be_clickable((By.NAME, 'modalPanelFormId:conceptosListId:5:j_id196'))).click()
         agregarMonto = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div[2]/div/div[2]/table/tbody/tr/td/form/span/div/div/div[2]/table/tbody/tr/td/div/table/tbody/tr[1]/td[5]/div/input')))
         agregarMonto.send_keys(monto)
+        st.write("ℹ Monto agregado")
         time.sleep(1)
         grabar = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div/div[2]/div/div[2]/table/tbody/tr/td/form/table/tbody/tr/td[1]/input'))).click()
 
@@ -208,8 +210,8 @@ if driver:
                 response = requests.post(upload_url, files=files)
             # Verificar la respuesta del servidor
             if response.status_code == 200:
-                st.success(f"✅ Archivo {pdf_path} enviado con éxito al servidor.")
-                st.write("Respuesta del servidor:", response.text)
+                st.success(f"✅ Archivo enviado con éxito al servidor.")
+                # st.write("Respuesta del servidor:", response.text)
             else:
                 st.error(f"❌ Error al enviar el archivo. Código de estado: {response.status_code}")
                 st.write("Mensaje del servidor:", response.text)
