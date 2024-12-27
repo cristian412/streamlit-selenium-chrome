@@ -76,20 +76,20 @@ if driver:
         juicio = query_params.get("juicio", [""])  # Extraer el primer valor o usar "" como predeterminado
         usuario = query_params.get("u", [""])      # Extraer el primer valor o usar "" como predeterminado
         password = query_params.get("p", [""])     # Extraer el primer valor o usar "" como predeterminado
-        upload = query_params.get("upload", [""])     # Extraer el primer valor o usar "" como predeterminado
+        controlador = query_params.get("controlador", [""])     # Extraer el primer valor o usar "" como predeterminado
 
         # Validar los valores obtenidos
-        if not juicio:
+        if juicio==[""]:
             st.warning("No se proporcionó un número de juicio en la URL.")
             st.stop()
-        if not usuario:
+        if usuario==[""]:
             st.warning("No se proporcionó el usuario en la URL.")
             st.stop()
-        if not password:
+        if password==[""]:
             st.warning("No se proporcionó la contraseña en la URL.")
             st.stop()
-        if not upload:
-            st.warning("no upload")
+        if controlador==[""]:
+            st.warning("no controlador")
             st.stop()
 
         # Mostrar el valor en la interfaz
@@ -198,7 +198,7 @@ if driver:
         os.remove(archivo_original)
         pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
         # URL de tu hosting para recibir el archivo
-        upload_url = "https://" + upload  
+        upload_url = "https://" + controlador + "uploadtasajudicial"  
         # Mostrar progreso en Streamlit
         st.write(f"📤 Enviando el archivo {pdf_path} al servidor...")
         try:
