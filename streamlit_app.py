@@ -198,7 +198,7 @@ if driver:
         os.remove(archivo_original)
         pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
         # URL de tu hosting para recibir el archivo
-        upload_url = "https://" + controlador + "uploadtasajudicial"  
+        upload_url = "https://" + controlador + "/uploadtasajudicial"  
         # Mostrar progreso en Streamlit
         st.write(f"📤 Enviando el archivo {pdf_path} al servidor...")
         try:
