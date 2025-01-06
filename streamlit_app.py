@@ -270,14 +270,14 @@ if driver:
                     st.stop()
             else:
                 # --- Descarga el pdf del juicio en caso que sea Juzgado de Paz
-                pdf_url = "https://" + controlador + "preparacion_pdf/" +  id_juicio + "/?usuario="+usuario+"&pass="+password
+                pdf_url = "https://" + controlador + "preparacion_pdf/" +  juicio + "/?usuario="+usuario+"&pass="+password
                 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 response = requests.get(pdf_url, headers=headers)
                 if response.status_code == 200:
                     # Abre un archivo local en modo binario para escribir el contenido del PDF
-                    with open(id_juicio+"-archivo.pdf", "wb") as pdf_file:
+                    with open(juicio+"-archivo.pdf", "wb") as pdf_file:
                         pdf_file.write(response.content)
-                    st.write( "--- PDF descargado exitosamente como: " + id_juicio+"-archivo.pdf")
+                    st.write( "--- PDF descargado exitosamente como: " + juicio +"-archivo.pdf")
                 else:
                     st.write(  "No se pudo descargar el PDF. Código de respuesta:", response.status_code)
                     st.stop()
@@ -339,10 +339,10 @@ if driver:
                 a = 1
                 # ------- OBSERVACION: SOLAMENTE PARA SIN TASA POR AHORA
                 # # acá va si es tasa judicial
-                # if not os.path.exists(id_juicio+" tasa.pdf"):
+                # if not os.path.exists(juicio+" tasa.pdf"):
                 #     st.write("El archivo "+juicio+" tasa.pdf NO EXISTE.")
                 #     st.stop()      
-                # with open(id_juicio+" tasa.pdf", "rb") as pdf_file:
+                # with open(juicio+" tasa.pdf", "rb") as pdf_file:
                 #     text = PyPDF3.PdfFileReader(pdf_file).getPage(0).extractText()
                 #     lineas = text.split('\n') # Nro Liquidacion: lineas[4]
                 #     nroLiquidacion = lineas[4]
@@ -540,7 +540,7 @@ if driver:
                 archivo_alzar = "poder_general_union.pdf"
             else:
                 cant_fojas_nro = '1'
-                archivo_alzar = data['id_juicios']+"-archivo.pdf"
+                archivo_alzar = juicio + "-archivo.pdf"
                 
             # Cantidad de Fojas
             cantFojas = driver.find_element(By.XPATH, '/html/body/form/div[3]/div[2]/div/div[3]/div[2]/span/input[1]')
