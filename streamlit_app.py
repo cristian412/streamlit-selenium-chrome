@@ -200,10 +200,37 @@ if driver:
 
             # Construye el nombre del archivo más alto
             nombre_archivo_mas_alto = f"liquidacionJuicio{numero_mas_alto}.pdf"
+ 
+             # LEER OCR DEL PDF DESCARGADO
+            # Ruta del PDF descargado
+            # Verificar si el archivo existe
+            if os.path.exists(nombre_archivo_mas_alto):
+                # st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
+                with open(nombre_archivo_mas_alto, "rb") as pdf_file:
+                    reader = PyPDF2.PdfReader(pdf_file)
+                    texto_completo = ""
+
+                    # Extraer texto de cada página
+                    for i, page in enumerate(reader.pages):
+                        texto_completo += f"--- Página {i + 1} ---\n"
+                        texto_completo += page.extract_text() + "\n"
+
+                    patron = r"\b\d+[A-Z]\b"
+                    # Buscar el valor en el texto
+                    resultado = re.search(patron, texto_completo)
+                    liquidacion = resultado.group()
+                    st.header("Liquidación Nro.")
+                    st.code(liquidacion)
+                    st.header("Texto extraído del PDF:")
+                    st.text(texto_completo)
+            else:
+                st.text(f"El archivo {pdf_path} no existe.")
+ 
+ 
             # Rutas de archivo de origen y carpeta de destino
             archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             path_carpeta_destino = "tasas/"
-            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-tasa.pdf")
+            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-{liquidacion}-tasa.pdf")
             # Copia el archivo a la carpeta de destino y cambia su nombre
             shutil.copy(archivo_a_copiar, carpeta_destino)
             # Ruta del archivo original en la carpeta de descargas
@@ -233,31 +260,7 @@ if driver:
             except Exception as e:
                 st.error(f"⚠️ Ocurrió un error al enviar el archivo: {e}")
 
-            # LEER OCR DEL PDF DESCARGADO
-            # Ruta del PDF descargado
-            pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
-            # Verificar si el archivo existe
-            if os.path.exists(pdf_path):
-                # st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
-                with open(pdf_path, "rb") as pdf_file:
-                    reader = PyPDF2.PdfReader(pdf_file)
-                    texto_completo = ""
 
-                    # Extraer texto de cada página
-                    for i, page in enumerate(reader.pages):
-                        texto_completo += f"--- Página {i + 1} ---\n"
-                        texto_completo += page.extract_text() + "\n"
-
-                    patron = r"\b\d+[A-Z]\b"
-                    # Buscar el valor en el texto
-                    resultado = re.search(patron, texto_completo)
-                    liquidacion = resultado.group()
-                    st.header("Liquidación Nro.")
-                    st.code(liquidacion)
-                    st.header("Texto extraído del PDF:")
-                    st.text(texto_completo)
-            else:
-                st.text(f"El archivo {pdf_path} no existe.")
                 
         # ---- PROCESO DAR ENTRADA
         if proceso=='darentrada':
