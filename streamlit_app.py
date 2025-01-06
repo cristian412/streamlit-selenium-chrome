@@ -242,7 +242,7 @@ if driver:
             if os.path.exists(pdf_path):
                 # st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
                 with open(pdf_path, "rb") as pdf_file:
-                    reader = PyPDF3.PdfReader(pdf_file)
+                    reader = PyPDF2.PdfReader(pdf_file)
                     texto_completo = ""
 
                     # Extraer texto de cada página
