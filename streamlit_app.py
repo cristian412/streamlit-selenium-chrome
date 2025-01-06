@@ -618,7 +618,7 @@ if driver:
                 # Abrir el archivo y enviarlo como parte del POST
                 with open(pdf_path, "rb") as pdf_file:
                     files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
-                    
+                    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                     response = requests.post(upload_url, files=files)
                 # Verificar la respuesta del servidor
                 if response.status_code == 200:
