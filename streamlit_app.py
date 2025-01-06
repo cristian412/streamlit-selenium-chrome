@@ -600,7 +600,7 @@ if driver:
 
             # Construye el nombre del archivo más alto
             nombre_archivo_mas_alto = f"Contraseña Entrada {str(numero_mas_alto)}.pdf"
-            st.write("nombre_archivo_mas_alto"+nombre_archivo_mas_alto)
+            st.write("nombre_archivo_mas_alto: "+nombre_archivo_mas_alto)
             # Rutas de archivo de origen y carpeta de destino
             archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             path_carpeta_destino = "tasas/"
@@ -610,21 +610,21 @@ if driver:
             # Ruta del archivo original en la carpeta de descargas
             archivo_original = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             # Borra el archivo original en la carpeta de descargas
-            os.remove(archivo_original)
+            # os.remove(archivo_original)
 
             # ENVIAR CARATULA AL SERVIDOR
             pdf_path = "./tasas/" + str(juicio) + "-caratula.pdf"
             # URL de tu hosting para recibir el archivo
-            upload_url = "https://" + str(controlador) + "/uploadcaratula"  
+            upload_url = "https://unionnegocios.com.py/sistema/juicios/uploadcaratula"
+            st.write("upload_url: "+upload_url)
             # Mostrar progreso en Streamlit
             st.write(f"📤 Enviando el archivo  al servidor...")
             try:
                 # Abrir el archivo y enviarlo como parte del POST
-                with open(pdf_path, "rb") as pdf_file:
+                with open(nombre_archivo_mas_alto, "rb") as pdf_file:
                     files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
                     headers = {
-                        "Accept": "*.*",  # Intenta con JSON
-                        "Content-Type": "application/pdf",
+                        "Accept": "*/*",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
                     }
                     response = requests.post(upload_url, files=files)
