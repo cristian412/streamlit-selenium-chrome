@@ -600,6 +600,7 @@ if driver:
 
             # Construye el nombre del archivo más alto
             nombre_archivo_mas_alto = f"Contraseña Entrada {str(numero_mas_alto)}.pdf"
+            st.write("nombre_archivo_mas_alto"+nombre_archivo_mas_alto)
             # Rutas de archivo de origen y carpeta de destino
             archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             path_carpeta_destino = "tasas/"
@@ -622,7 +623,7 @@ if driver:
                 with open(pdf_path, "rb") as pdf_file:
                     files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
                     headers = {
-                        "Accept": "application/pdf",  # Intenta con JSON
+                        "Accept": "*.*",  # Intenta con JSON
                         "Content-Type": "application/pdf",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
                     }
