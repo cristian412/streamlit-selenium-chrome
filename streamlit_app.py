@@ -277,7 +277,7 @@ if driver:
                 response = requests.get(pdf_url, headers=headers)
                 if response.status_code == 200:
                     # Abre un archivo local en modo binario para escribir el contenido del PDF
-                    with open(id_juicio+"-archivo.pdf", "wb") as pdf_file:
+                    with open("tasas/"+id_juicio+"-archivo.pdf", "wb") as pdf_file:
                         pdf_file.write(response.content)
                     st.write( "--- PDF descargado exitosamente como: " + id_juicio+"-archivo.pdf")
                 else:
@@ -542,7 +542,7 @@ if driver:
                 archivo_alzar = "poder_general_union.pdf"
             else:
                 cant_fojas_nro = '1'
-                archivo_alzar = id_juicio + "-archivo.pdf"
+                archivo_alzar = "tasas/"+id_juicio + "-archivo.pdf"
                 
             # Cantidad de Fojas
             cantFojas = driver.find_element(By.XPATH, '/html/body/form/div[3]/div[2]/div/div[3]/div[2]/span/input[1]')
@@ -561,7 +561,7 @@ if driver:
             guardarArchivo = driver.find_element(By.ID, "ctl16_btnGuardar_input")
             guardarArchivo.click()
             driver.switch_to.default_content()
-            time.sleep(3)
+            time.sleep(5)
             st.write("- documentos alzados")
 
             # ---- SORTEAR
