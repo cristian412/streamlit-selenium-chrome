@@ -582,53 +582,53 @@ if driver:
             # time.sleep(5)
             st.write("- causa sorteada")
 
-            carpeta_descargas = '.'
-            archivos_en_descargas = os.listdir(carpeta_descargas)
-            # Inicializa la variable para el número más alto
-            numero_mas_alto = 0
-            # Busca el número más alto en los nombres de los archivos
-            for archivo in archivos_en_descargas:
-                if archivo.startswith("Contraseña Entrada ") and archivo.endswith(".pdf"):
-                    # Extrae solo los dígitos del nombre del archivo
-                    numero_str = ''.join(filter(str.isdigit, archivo))
-                    if numero_str:
-                        numero = int(numero_str)
-                        numero_mas_alto = max(numero_mas_alto, numero)
+            # carpeta_descargas = '.'
+            # archivos_en_descargas = os.listdir(carpeta_descargas)
+            # # Inicializa la variable para el número más alto
+            # numero_mas_alto = 0
+            # # Busca el número más alto en los nombres de los archivos
+            # for archivo in archivos_en_descargas:
+            #     if archivo.startswith("Contraseña Entrada ") and archivo.endswith(".pdf"):
+            #         # Extrae solo los dígitos del nombre del archivo
+            #         numero_str = ''.join(filter(str.isdigit, archivo))
+            #         if numero_str:
+            #             numero = int(numero_str)
+            #             numero_mas_alto = max(numero_mas_alto, numero)
 
-            # Construye el nombre del archivo más alto
-            nombre_archivo_mas_alto = f"Contraseña Entrada {numero_mas_alto}.pdf"
-            # Rutas de archivo de origen y carpeta de destino
-            archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
-            path_carpeta_destino = "tasas/"
-            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-caratula.pdf")
-            # Copia el archivo a la carpeta de destino y cambia su nombre
-            shutil.copy(archivo_a_copiar, carpeta_destino)
-            # Ruta del archivo original en la carpeta de descargas
-            archivo_original = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
-            # Borra el archivo original en la carpeta de descargas
-            os.remove(archivo_original)
+            # # Construye el nombre del archivo más alto
+            # nombre_archivo_mas_alto = f"Contraseña Entrada {numero_mas_alto}.pdf"
+            # # Rutas de archivo de origen y carpeta de destino
+            # archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
+            # path_carpeta_destino = "tasas/"
+            # carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-caratula.pdf")
+            # # Copia el archivo a la carpeta de destino y cambia su nombre
+            # shutil.copy(archivo_a_copiar, carpeta_destino)
+            # # Ruta del archivo original en la carpeta de descargas
+            # archivo_original = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
+            # # Borra el archivo original en la carpeta de descargas
+            # os.remove(archivo_original)
 
-            # ENVIAR CARATULA AL SERVIDOR
-            pdf_path = "./tasas/" + str(juicio) + "-caratula.pdf"
-            # URL de tu hosting para recibir el archivo
-            upload_url = "https://" + controlador + "/uploadcaratula"  
-            # Mostrar progreso en Streamlit
-            st.write(f"📤 Enviando el archivo  al servidor...")
-            try:
-                # Abrir el archivo y enviarlo como parte del POST
-                with open(pdf_path, "rb") as pdf_file:
-                    files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
-                    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-                    response = requests.post(upload_url, files=files)
-                # Verificar la respuesta del servidor
-                if response.status_code == 200:
-                    st.success(f"✅ Archivo enviado con éxito al servidor.")
-                    # st.write("Respuesta del servidor:", response.text)
-                else:
-                    st.error(f"❌ Error al enviar el archivo. Código de estado: {response.status_code}")
-                    st.write("Mensaje del servidor:", response.text)
-            except Exception as e:
-                st.error(f"⚠️ Ocurrió un error al enviar el archivo: {e}")
+            # # ENVIAR CARATULA AL SERVIDOR
+            # pdf_path = "./tasas/" + str(juicio) + "-caratula.pdf"
+            # # URL de tu hosting para recibir el archivo
+            # upload_url = "https://" + controlador + "/uploadcaratula"  
+            # # Mostrar progreso en Streamlit
+            # st.write(f"📤 Enviando el archivo  al servidor...")
+            # try:
+            #     # Abrir el archivo y enviarlo como parte del POST
+            #     with open(pdf_path, "rb") as pdf_file:
+            #         files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
+            #         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
+            #         response = requests.post(upload_url, files=files)
+            #     # Verificar la respuesta del servidor
+            #     if response.status_code == 200:
+            #         st.success(f"✅ Archivo enviado con éxito al servidor.")
+            #         # st.write("Respuesta del servidor:", response.text)
+            #     else:
+            #         st.error(f"❌ Error al enviar el archivo. Código de estado: {response.status_code}")
+            #         st.write("Mensaje del servidor:", response.text)
+            # except Exception as e:
+            #     st.error(f"⚠️ Ocurrió un error al enviar el archivo: {e}")
 
 
             time.sleep(3)
