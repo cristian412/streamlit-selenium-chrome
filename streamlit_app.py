@@ -615,7 +615,7 @@ if driver:
             # ENVIAR CARATULA AL SERVIDOR
             pdf_path = "./tasas/" + str(juicio) + "-caratula.pdf"
             # URL de tu hosting para recibir el archivo
-            upload_url = "https://unionnegocios.com.py/sistema/juicios/uploadcaratula"
+            upload_url = "https://" + str(controlador) + "/uploadcaratula"
             st.write("upload_url: "+upload_url)
             # Mostrar progreso en Streamlit
             st.write(f"📤 Enviando el archivo  al servidor...")
