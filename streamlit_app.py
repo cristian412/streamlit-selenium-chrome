@@ -542,7 +542,7 @@ if driver:
                 archivo_alzar = "poder_general_union.pdf"
             else:
                 cant_fojas_nro = '1'
-                archivo_alzar = data['id_juicios']+"-archivo.pdf"
+                archivo_alzar = data['id_juicio']+"-archivo.pdf"
                 
             # Cantidad de Fojas
             cantFojas = driver.find_element(By.XPATH, '/html/body/form/div[3]/div[2]/div/div[3]/div[2]/span/input[1]')
