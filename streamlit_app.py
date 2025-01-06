@@ -183,7 +183,7 @@ if driver:
             # ----- PARA FINALIZAR SE TIENE QUE DESCARGAR LA TASA JUDICIAL
             time.sleep(5)
             imprimir = driver.find_element(By.XPATH, '/html/body/table/tbody/tr[5]/td/div/div/table/tbody/tr/td[2]/table/tbody/tr[6]/td/table/tbody/tr[2]/td[1]/table/tbody/tr/td/form/table/tbody/tr/td[1]/input').click()
-            time.sleep(5)
+            time.sleep(15)
             # ----- FIN.
 
             # Obtener una lista de archivos en la carpeta de descargas
