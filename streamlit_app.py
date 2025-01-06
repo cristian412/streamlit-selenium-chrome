@@ -239,7 +239,7 @@ if driver:
             #os.remove(archivo_original)
 
             # ENVIAR TASA GENERADA AL SERVIDOR
-            pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
+            pdf_path = "./tasas/" + str(juicio) + "-" + liquidacion + "tasa.pdf"
             # URL de tu hosting para recibir el archivo
             upload_url = "https://" + controlador + "/uploadtasajudicial"  
             # Mostrar progreso en Streamlit
