@@ -42,7 +42,7 @@ juicio = query_params.get("juicio", [""])
 usuario = query_params.get("u", [""])     
 password = query_params.get("p", [""])    
 controlador = query_params.get("controlador", [""])    
-proceso = query_params.get("proceso", [""])    
+proceso = query_params.get("proceso", [""])
 
 # Validar los valores obtenidos
 if juicio==[""] or usuario==[""] or controlador==[""] or proceso==[""]:
@@ -51,7 +51,7 @@ if juicio==[""] or usuario==[""] or controlador==[""] or proceso==[""]:
 
 st.write("🚀 Iniciar proceso !!")
 
-url = 'https://' + controlador + '/datos/' + str(juicio)
+url = 'https://' + str(controlador) + '/datos/' + str(juicio)
 try:
     # Usar encabezados genéricos
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
