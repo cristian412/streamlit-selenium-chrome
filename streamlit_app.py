@@ -54,10 +54,7 @@ st.write("🚀 Iniciar proceso !!")
 url = 'https://' + controlador + '/datos/' + juicio
 try:
     # Usar encabezados genéricos
-    headers = {
-        "Accept": "*/*",  # Aceptar cualquier tipo de respuesta
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json() # data['id_juicios']
@@ -640,6 +637,7 @@ if driver:
                 # Abrir el archivo y enviarlo como parte del POST
                 with open(pdf_path, "rb") as pdf_file:
                     files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
+                    
                     response = requests.post(upload_url, files=files)
                 # Verificar la respuesta del servidor
                 if response.status_code == 200:
