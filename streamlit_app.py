@@ -83,8 +83,7 @@ try:
 except Exception as e:
     st.write(f"Error: {str(e)}")
 
-st.write("⌛ procesando....")
-st.stop()  
+st.write("⌛ procesando....") 
 
 # Configurar opciones del navegador
 options = Options()
