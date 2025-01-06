@@ -209,7 +209,7 @@ if driver:
             # Ruta del archivo original en la carpeta de descargas
             archivo_original = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             # Borra el archivo original en la carpeta de descargas
-            os.remove(archivo_original)
+            #os.remove(archivo_original)
 
             # ENVIAR TASA GENERADA AL SERVIDOR
             pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
