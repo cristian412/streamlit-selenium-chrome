@@ -171,7 +171,7 @@ if driver:
             agregarMonto = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div[2]/div/div[2]/table/tbody/tr/td/form/span/div/div/div[2]/table/tbody/tr/td/div/table/tbody/tr[1]/td[5]/div/input')))
             agregarMonto.send_keys(monto)
             st.write("ℹ Monto agregado")
-            time.sleep(1)
+            time.sleep(5)
             grabar = wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div/div[2]/div/div[2]/table/tbody/tr/td/form/table/tbody/tr/td[1]/input'))).click()
 
             # SOLUCIÓN 3 (#) Espera a que aparezca el cuadro de diálogo
