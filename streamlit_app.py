@@ -260,27 +260,6 @@ if driver:
                 
         # ---- PROCESO DAR ENTRADA
         if proceso=='darentrada':
-            try:
-                headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
-                response = requests.get(url,headers=headers)
-                if response.status_code == 200:
-                    data = response.json()
-                    if data.get("respuesta") is None:
-                        id_juicio = data['id_juicios']
-                        cedula = data['ci1']
-                        monto = data['monto']
-                        grupo = data['grupo']
-                        credito_nro = data['credito_nro']
-                        st.write( "--- " + cedula + " " + data['dem1'] + " " + monto )
-                    else:
-                        st.write(" ⚠️  Error no existe la ciudad." )
-                        st.stop()            
-                else:
-                    st.write(  "⚠️  Error {response.status_code} ")
-                    st.stop()
-            except Exception as e:
-                st.write(  "⚠️  Error " + str(e))
-                st.stop()
             st.write( '⌛ procesa DAR ENTRADA')
 
             if int(monto) > (jornal*300):
