@@ -20,7 +20,7 @@ import os
 import re
 import glob
 import shutil
-import PyPDF3
+import PyPDF2
 
 # --- VARIABLES INICIALES
 fecha = date.today()
