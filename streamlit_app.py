@@ -271,7 +271,7 @@ if driver:
                     st.stop()
             else:
                 # --- Descarga el pdf del juicio en caso que sea Juzgado de Paz
-                pdf_url = "https://" + controlador + "preparacion_pdf/" +  id_juicio + "/?usuario="+usuario+"&pass="+password
+                pdf_url = "https://" + controlador + "/preparacion_pdf/" +  id_juicio + "/?usuario="+usuario+"&pass="+password
                 st.write(pdf_url)
                 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 response = requests.get(pdf_url, headers=headers)
