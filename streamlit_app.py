@@ -20,17 +20,71 @@ import os
 import re
 import glob
 import shutil
-import PyPDF2
+import PyPDF3
 
 # --- VARIABLES INICIALES
 fecha = date.today()
 fecha_actual = fecha.strftime("%d/%m/%Y")
 tiempo_inicio = time.time()
 jornal = 103700
-actor_ruc = '80111738-0'
+
 # --- Concepto juicio
-# Acción Preparatoria de Juicio Ejecutivo
-concepto_juicio = 'juicioFormId:j_id109';
+concepto_juicio = 'juicioFormId:j_id109' # Acción Preparatoria de Juicio Ejecutivo
+
+# Distrito por Defecto Juzgado de Paz
+distrito_paz = '/html/body/form/div[1]/div/div[1]/ul/li[4]' # VILLA MORRA
+
+# # CARGAR EL NUMERO DE JUICIO 
+# ?p=401-1591666-estudiocloss3-union/sistema/juicios-creatsasa
+query_params = st.query_params
+# Extraer los valores de 'juicio', 'user' y 'pass'
+juicio = query_params.get("juicio", [""])  
+usuario = query_params.get("u", [""])     
+password = query_params.get("p", [""])    
+controlador = query_params.get("controlador", [""])    
+proceso = query_params.get("proceso", [""])    
+
+# Validar los valores obtenidos
+if juicio==[""] or usuario==[""] or controlador==[""] or proceso==[""]:
+    st.warning("Bienvenido")
+    st.stop()
+
+st.write("🚀 Iniciar proceso !!")
+
+url = 'https://' + controlador + '/datos/' + juicio
+try:
+    # Usar encabezados genéricos
+    headers = {
+        "Accept": "*/*",  # Aceptar cualquier tipo de respuesta
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json() # data['id_juicios']
+        cedula = data['ci1']
+        monto = data['monto']
+        actor_ruc = data['actor_ruc']
+        actor_dom_real_calle = data['actor_dom_real_calle']
+        actor_dom_real_ciudad = data['actor_dom_real_ciudad']
+        actor_dom_procesal_calle = data['actor_dom_procesal_calle']
+        actor_dom_procesal_ciudad = data['actor_dom_procesal_ciudad']
+        concatenado = ""
+        # Recorrer todas las claves y valores del diccionario
+        for key, value in data.items():
+            concatenado += f"{key}: {value} | "
+        # Mostrar el resultado concatenado
+        resultado = f"--- Datos: {concatenado.strip('| ')}"
+        st.write(resultado)
+    else:
+        st.write(url)
+        st.write(f"⚠️ Error.... {response.status_code}")
+        st.stop()
+        
+except Exception as e:
+    st.write(f"Error: {str(e)}")
+
+st.write("⌛ procesando....")
+st.stop()  
 
 # Configurar opciones del navegador
 options = Options()
@@ -74,40 +128,7 @@ def action(path='', value='click' ):
 # Usar el controlador para acceder a una página web
 driver = get_driver()
 if driver:
-    try:
-        # # CARGAR EL NUMERO DE JUICIO 
-        # ?p=401-1591666-estudiocloss3-union/sistema/juicios-creatsasa
-        query_params = st.query_params
-        # Extraer los valores de 'juicio', 'user' y 'pass'
-        juicio = query_params.get("juicio", [""])  
-        usuario = query_params.get("u", [""])     
-        password = query_params.get("p", [""])    
-        controlador = query_params.get("controlador", [""])    
-        proceso = query_params.get("proceso", [""])    
-
-        # Validar los valores obtenidos
-        if juicio==[""] or usuario==[""] or controlador==[""] or proceso==[""]:
-            st.warning("Bienvenido")
-            st.stop()
-
-        st.write("🚀 Iniciar proceso !!")
-
-        url = 'https://' + controlador + '/datos/' + juicio
-        try:
-            headers = {"Accept": "application/json"} # Cambiar Content-Type a Accept
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json() # data['id_juicios']
-                cedula = data['ci1']
-                monto = data['monto']
-                st.write("--- CI: " + " | DEM: " + data['dem1'] + data['ci1'] + " | MONTO: " + data['monto'] )
-            else:
-                st.write("\x1b[⚠️ Error.... {response.status_code}\x1b[0m")
-                
-        except Exception as e:
-            st.write(f"Error: {str(e)}")
-            
-        st.write("⌛ procesando....")
+    try:  
 
         if proceso=='creartasa':
             
@@ -221,7 +242,7 @@ if driver:
             if os.path.exists(pdf_path):
                 # st.markdown(f"[Abrir PDF del juicio {juicio}]({pdf_path})", unsafe_allow_html=True)
                 with open(pdf_path, "rb") as pdf_file:
-                    reader = PyPDF2.PdfReader(pdf_file)
+                    reader = PyPDF3.PdfReader(pdf_file)
                     texto_completo = ""
 
                     # Extraer texto de cada página
@@ -255,7 +276,7 @@ if driver:
                         credito_nro = data['credito_nro']
                         st.write( "--- " + cedula + " " + data['dem1'] + " " + monto )
                     else:
-                        st.write(  "⚠️  Error no existe la ciudad. Ver en unionnegocios.com.py/sistema/juicios/show/" + juicio )
+                        st.write(" ⚠️  Error no existe la ciudad." )
                         st.stop()            
                 else:
                     st.write(  "⚠️  Error {response.status_code} ")
@@ -267,12 +288,13 @@ if driver:
 
             if int(monto) > (jornal*300):
                 # --- poder general
+                # ------- OBSERVACION: SOLAMENTE SIN PODER POR AHORA (JUZGADO DE PAZ)
                 if not os.path.exists("poder_general_union.pdf"):
                     st.write("El archivo poder_general_union.pdf no existe.")
                     st.stop()
             else:
                 # --- Descarga el pdf del juicio en caso que sea Juzgado de Paz
-                pdf_url = "https://unionnegocios.com.py/sistema/escritos/preparacion_pdf/" +  id_juicio
+                pdf_url = "https://" + controlador + "preparacion_pdf/" +  id_juicio + "/?usuario="+usuario+"&pass="+password
                 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                 response = requests.get(pdf_url, headers=headers)
                 if response.status_code == 200:
@@ -300,7 +322,8 @@ if driver:
             # --- Inicia el proceso
             time.sleep(1)
             driver.switch_to.frame(0)
-            wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div/div[2]/div/table/tbody/tr[1]/td'))).click() # circunscripcion
+            # circunscripcion
+            wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div/div[2]/div/table/tbody/tr[1]/td'))).click() 
             driver.switch_to.default_content()
             # ---- SI ES PRIMERA INSTANCIA
             if int(monto) > (jornal*300):
@@ -323,7 +346,7 @@ if driver:
             if int(monto) > (jornal*300):
                 driver.find_element(By.XPATH, '/html/body/form/div[1]/div/div[1]/ul/li[2]').click() #distrito ASUNCION
             else:
-                driver.find_element(By.XPATH, '/html/body/form/div[1]/div/div[1]/ul/li[4]').click() #distrito VILLA MORRA
+                driver.find_element(By.XPATH, distrito_paz).click() #distrito VILLA MORRA
             time.sleep(1)
             driver.find_element(By.XPATH, '/html/body/form/div[5]/div[2]/div/div[2]/div[2]/div/table/tbody/tr/td[2]/a').click() #tipoProceso_btn
             time.sleep(0.5)
@@ -356,7 +379,7 @@ if driver:
             else:
                 montoJuicio = driver.find_element(By.XPATH, '//html/body/form/div[4]/div[2]/div/div[4]/div[2]/span/input[1]')
                 montoJuicio.click()
-                montoJuicio.send_keys(data['monto'])
+                montoJuicio.send_keys(monto)
                 time.sleep(1)
                 st.write("- Se ha cargado el monto del juicio")
 
@@ -398,7 +421,7 @@ if driver:
             waitclick(0.1,'/html/body/form/div[4]/div[3]/div[1]/div[3]/div[2]',driver) #demandanteTipoDocDivCampo
             waitclick(0.1,'/html/body/form/div[4]/div[3]/div[1]/div[3]/div[2]/select/option[2]',driver) #demandanteTipoDocDivCampo
             waitclick(0.1,'/html/body/form/div[4]/div[3]/div[1]/div[4]/div[2]',driver) # demandante NroDoc DivCampo
-            driver.find_element(By.XPATH, '/html/body/form/div[4]/div[3]/div[1]/div[4]/div[2]/span/input[1]').send_keys('80111738-0')  #demandanteNroDoc
+            driver.find_element(By.XPATH, '/html/body/form/div[4]/div[3]/div[1]/div[4]/div[2]/span/input[1]').send_keys(actor_ruc)  #demandanteNroDoc
             waitclick(0.5,'/html/body/form/div[4]/div[3]/div[1]/div[4]/a',driver) # Demandante obtener datos
             waitclick(0.5,'/html/body/form/div[4]/div[3]/div[2]/div/table/tbody/tr/td[1]/input',driver) #demandanteSeleccionarDato
             waitclick(1,'/html/body/form/div[4]/div[4]/a[1]/input[1]',driver) #demandanteRegistrar
@@ -409,10 +432,10 @@ if driver:
             waitclick(0.1,'/html/body/form/div[3]/div/div[4]/div/div[1]/div[2]',driver) #demandanteTipoDomicilioProcesalDivCampo
             waitclick(0.1,'/html/body/form/div[3]/div/div[4]/div/div[1]/div[2]/select/option[3]',driver) #demandanteTipoDomicilioProcesal
             calle = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div/div[4]/div/div[3]/div[2]/input')))
-            calle.send_keys('VICENTE IGNACIO ITURBE  CASI RIO VERDE')
+            calle.send_keys(actor_dom_real_calle)
             localidad = wait.until(EC.element_to_be_clickable((By.ID, 'ctl16_rcLocalidad_Input')))
             localidad.click()
-            localidad.send_keys('LAMBARE')
+            localidad.send_keys(actor_dom_real_ciudad)
             st.write("- parte actora domicilio real agregado")
             waitclick(2,'/html/body/form/div[4]/div/div[5]/a[1]/input[1]',driver) #demandanteRegistrarProcesal
             # ---- Switch to frame
@@ -423,10 +446,10 @@ if driver:
             Agregar = driver.find_element(By.ID, 'ctl16_rdListaDomicilios_ctl00_ctl02_ctl00_lnkAgregar').click()
             driver.switch_to.frame(0)
             calle = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div/div[4]/div/div[3]/div[2]/input')))
-            calle.send_keys('11 PTDAS. NRO. 129 CASI INDEPENDENCIA NACIONAL BARRIO OBRERO')
+            calle.send_keys(actor_dom_procesal_calle)
             localidad = wait.until(EC.element_to_be_clickable((By.ID, 'ctl16_rcLocalidad_Input')))
             localidad.click()
-            localidad.send_keys('ASUNCION')
+            localidad.send_keys(actor_dom_procesal_ciudad)
             waitclick(2,'/html/body/form/div[4]/div/div[5]/a[1]/input[1]',driver) #demandanteRegistrarProcesal
             st.write("- parte actora domicilio procesal agregado")
             # ---- Guardar
