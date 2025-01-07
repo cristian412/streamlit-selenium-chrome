@@ -416,7 +416,7 @@ if driver:
             waitclick(0.5,'/html/body/form/div[4]/div[3]/div[2]/div/table/tbody/tr/td[1]/input',driver) #demandanteSeleccionarDato
             waitclick(1,'/html/body/form/div[4]/div[4]/a[1]/input[1]',driver) #demandanteRegistrar
             st.write("- parte actora agregada")
-            # ---- Actor Domicilio Real
+            # ---- ---- Actor Domicilio Real
             Agregar = driver.find_element(By.ID, 'ctl16_rdListaDomicilios_ctl00_ctl02_ctl00_lnkAgregar').click()
             driver.switch_to.frame(0)
             waitclick(0.1,'/html/body/form/div[3]/div/div[4]/div/div[1]/div[2]',driver) #demandanteTipoDomicilioProcesalDivCampo
@@ -428,11 +428,11 @@ if driver:
             localidad.send_keys(actor_dom_real_ciudad)
             st.write("- parte actora domicilio real agregado")
             waitclick(2,'/html/body/form/div[4]/div/div[5]/a[1]/input[1]',driver) #demandanteRegistrarProcesal
-            # ---- Switch to frame
+            # ---- ---- Switch to frame
             driver.switch_to.default_content()
             driver.switch_to.frame("rwDetalle")
             time.sleep(2)
-            # ---- Actor Domicilio Procesal
+            # ---- ---- Actor Domicilio Procesal
             Agregar = driver.find_element(By.ID, 'ctl16_rdListaDomicilios_ctl00_ctl02_ctl00_lnkAgregar').click()
             driver.switch_to.frame(0)
             calle = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/form/div[3]/div/div[4]/div/div[3]/div[2]/input')))
