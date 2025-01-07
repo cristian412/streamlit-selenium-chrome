@@ -230,7 +230,7 @@ if driver:
             # Rutas de archivo de origen y carpeta de destino
             archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             path_carpeta_destino = "tasas/"
-            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-{liquidacion}-tasa.pdf")
+            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-tasa.pdf")
             # Copia el archivo a la carpeta de destino y cambia su nombre
             shutil.copy(archivo_a_copiar, carpeta_destino)
             # Ruta del archivo original en la carpeta de descargas
