@@ -31,8 +31,6 @@ jornal = 103700
 # --- Concepto juicio
 concepto_juicio = 'juicioFormId:j_id109' # Acción Preparatoria de Juicio Ejecutivo
 
-# Distrito por Defecto Juzgado de Paz
-distrito_paz = '/html/body/form/div[1]/div/div[1]/ul/li[4]' # VILLA MORRA
 
 # # CARGAR EL NUMERO DE JUICIO 
 # ?p=401-1591666-estudiocloss3-union/sistema/juicios-creatsasa
@@ -66,6 +64,17 @@ try:
         actor_dom_real_ciudad = data['actor_dom_real_ciudad']
         actor_dom_procesal_calle = data['actor_dom_procesal_calle']
         actor_dom_procesal_ciudad = data['actor_dom_procesal_ciudad']
+        distrito = data['distrito']
+        # Distrito por Defecto Juzgado de Paz
+        distrito_paz = '/html/body/form/div[1]/div/div[1]/ul/li[4]' # VILLA MORRA
+        if 'la catedral' in distrito.lower():
+            distrito_paz =  '/html/body/form/div[1]/div/div[1]/ul/li[2]' # LA CATEDRAL
+        if 'la encar' in distrito.lower():
+            distrito_paz =  '/html/body/form/div[1]/div/div[1]/ul/li[3]' # LA ENCARNACION
+        if 'san roque' in distrito.lower():
+            distrito_paz =  '/html/body/form/div[1]/div/div[1]/ul/li[5]' # SAN ROQUE
+        if 'trinidad' in distrito.lower():
+            distrito_paz =  '/html/body/form/div[1]/div/div[1]/ul/li[6]' # SANTÍSIMA TRINIDAD
         concatenado = ""
         # Recorrer todas las claves y valores del diccionario
         for key, value in data.items():
@@ -604,7 +613,7 @@ if driver:
             # Rutas de archivo de origen y carpeta de destino
             archivo_a_copiar = os.path.join(carpeta_descargas, nombre_archivo_mas_alto)
             path_carpeta_destino = "tasas/"
-            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-caratu.pdf")
+            carpeta_destino = os.path.join(path_carpeta_destino, f"{juicio}-caratula.pdf")
             # Copia el archivo a la carpeta de destino y cambia su nombre
             shutil.copy(archivo_a_copiar, carpeta_destino)
             # Ruta del archivo original en la carpeta de descargas
@@ -613,16 +622,16 @@ if driver:
             # os.remove(archivo_original)
 
             # ENVIAR CARATULA AL SERVIDOR
-            pdf_path = "./tasas/" + str(juicio) + "-caratu.pdf"
+            pdf_path = "./tasas/" + str(juicio) + "-caratula.pdf"
             # URL de tu hosting para recibir el archivo
-            upload_url = "https://" + str(controlador) + "/uploadtasajudicial"
+            upload_url = "https://" + str(controlador) + "/uploadcaratula"
             st.write("upload_url: "+upload_url)
             # Mostrar progreso en Streamlit
             st.write(f"📤 Enviando el archivo  al servidor...")
             try:
                 # Abrir el archivo y enviarlo como parte del POST
                 with open(nombre_archivo_mas_alto, "rb") as pdf_file:
-                    files = {"file": (f"{juicio}-caratu.pdf", pdf_file, "application/pdf")}
+                    files = {"file": (f"{juicio}-caratula.pdf", pdf_file, "application/pdf")}
                     headers = {
                         "Accept": "*/*",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36"
