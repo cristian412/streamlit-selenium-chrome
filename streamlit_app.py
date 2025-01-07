@@ -224,7 +224,7 @@ if driver:
                     st.header("Texto extraído del PDF:")
                     st.text(texto_completo)
             else:
-                st.text(f"El archivo {pdf_path} no existe.")
+                st.text(f"El archivo  no existe.")
  
  
             # Rutas de archivo de origen y carpeta de destino
