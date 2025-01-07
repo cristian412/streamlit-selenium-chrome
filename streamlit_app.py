@@ -239,7 +239,7 @@ if driver:
             #os.remove(archivo_original)
 
             # ENVIAR TASA GENERADA AL SERVIDOR
-            pdf_path = "./tasas/" + str(juicio) + "-" + liquidacion + "-tasa.pdf"
+            pdf_path = "./tasas/" + str(juicio) + "-tasa.pdf"
             # URL de tu hosting para recibir el archivo
             upload_url = "https://" + controlador + "/uploadtasajudicial"  
             # Mostrar progreso en Streamlit
@@ -247,7 +247,7 @@ if driver:
             try:
                 # Abrir el archivo y enviarlo como parte del POST
                 with open(pdf_path, "rb") as pdf_file:
-                    files = {"file": (f"{juicio}-{liquidacion}-tasa.pdf", pdf_file, "application/pdf")}
+                    files = {"file": (f"{juicio}-tasa.pdf", pdf_file, "application/pdf")}
                     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
                     response = requests.post(upload_url, files=files, headers=headers)
                 # Verificar la respuesta del servidor
