@@ -145,6 +145,7 @@ if driver:
             action('j_id3:username',usuario)
             action('j_id3:password',password)
             action('j_id3:submit','click')
+            time.sleep(1)
             action('iconabogadosFormId:j_id17','click')
             action('iconabogadosFormId:j_id18','click')
             action('juicioFormId:fechaIdInputDate',fecha_actual)
